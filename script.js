@@ -459,7 +459,7 @@ function computePayrollFor(emp, D, opts){
   const advanceAmount = Number(opts.advanceAmount||0);
   const otherDeductions = Number(opts.otherDeductions||0);
 
-  const net = basic - lateDed - halfDed - absDed - quotaDed + salesCommPKR + weeklyCommPKR - advanceAmount - otherDeductions;
+  const net = basic - lateDed - halfDed - absDed - quotaDed + salesCommPKR - advanceAmount - otherDeductions;
   return {
     empId:emp.empId, basic, basicNote, daily:Math.round(daily), workingDays,
     present, lates, halfDays, paidLeaves, unpaidLeaves, absents,
@@ -1942,7 +1942,7 @@ function applyOverrides(emp, p){
   merged.net = Math.round(
     (merged.basic||0)
     - (merged.halfDed||0) - (merged.absDed||0) - (merged.quotaDed||0)
-    + (merged.salesCommPKR||0) + (merged.weeklyCommPKR||0)
+    + (merged.salesCommPKR||0)
     - (merged.advanceAmount||0) - (merged.otherDeductions||0)
   );
   return merged;
@@ -2026,7 +2026,7 @@ window.openPayrollActionsModal = async function(emp){
         const curRev = isS ? readVal('revenueUSD') : 0;
         if (isS && curRev >= 3500){ halfD = 0; absD = 0; quotaD = 0; setVal('halfDed',0); setVal('absDed',0); setVal('quotaDed',0); }
         const td = halfD + absD + quotaD + advD + othD;
-        const net = Math.round(basic + salesC + weeklyC - td);
+        const net = Math.round(basic + salesC - td);
         const take = basic + salesC + weeklyC;
         const tdEl = document.getElementById('liveTotalDed'); if (tdEl) tdEl.textContent = '-' + fmtMoney(td);
         const netEl = document.getElementById('liveNet'); if (netEl) netEl.textContent = fmtMoney(net);
